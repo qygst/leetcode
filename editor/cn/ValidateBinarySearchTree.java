@@ -34,7 +34,6 @@
 
 package leetcode.editor.cn;
 
-import me.wangbing.practice.base.TreeNode;
 
 public class ValidateBinarySearchTree {
     public static void main(String[] args) {

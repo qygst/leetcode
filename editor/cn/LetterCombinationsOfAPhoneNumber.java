@@ -50,7 +50,7 @@ public class LetterCombinationsOfAPhoneNumber {
     public static void main(String[] args) {
         Solution solution = new LetterCombinationsOfAPhoneNumber().new Solution();
         // TO TEST
-        String digits = "23";
+        String digits = "237";
         List<String> res = solution.letterCombinations(digits);
         for (int i = 0; i < res.size(); i++) {
             System.out.print(res.get(i) + ", ");
@@ -82,12 +82,13 @@ public class LetterCombinationsOfAPhoneNumber {
         private void backtrace(List<String> combinations, Map<Character, String> phoneMap, String digits, int index, StringBuffer combination) {
             if (index == digits.length()) {
                 combinations.add(combination.toString());
+                return;
             }
 
             String letters = phoneMap.get(digits.charAt(index));
 
             for (int i = 0; i < letters.length(); i++) {
-                combination.append(letters.codePointAt(i));
+                combination.append(letters.substring(i, i + 1));
                 backtrace(combinations, phoneMap, digits, index + 1, combination);
                 combination.deleteCharAt(index);
             }

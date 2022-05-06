@@ -1,4 +1,3 @@
-/*
 //给你一个包含 n 个整数的数组 nums，判断 nums 中是否存在三个元素 a，b，c ，使得 a + b + c = 0 ？请你找出所有满足条件且不重复
 //的三元组。 
 //
@@ -26,39 +25,75 @@ import java.util.*;
 public class ThreeSum {
     public static void main(String[] args) {
         Solution solution = new ThreeSum().new Solution();
-        int[] nums = new int[]{-1,0,1,2,-1,-4};
+//        int[] nums = new int[]{-1, 0, 1, 2, -1, -4};
+//        int[] nums = new int[]{0, 0, 0, 0};
+        int[] nums = new int[]{1, -1, -1, 0};
         List<List<Integer>> res = solution.threeSum(nums);
-        System.out.println("");
-    }
-    //leetcode submit region begin(Prohibit modification and deletion)
-class Solution {
-    public List<List<Integer>> threeSum(int[] nums) {
-        if (nums.length<3) return null;
 
-        quickSort(nums, 0, nums.length-1);
-        List<List<Integer>> res = new ArrayList<>();
-        HashMap<String, String> str = new HashMap<>();
-        for (int index = 0; index < nums.length && nums[index] <= 0; index++) {
-            int target = -nums[index];
-            for (int i = index + 1, j = nums.length -1; i < j;) {
-                if (nums[i] + nums[j] == target) {
-                    str.put(nums[index]+","+nums[i]+","+nums[j],"");
-                    i++;
-                } else if (nums[i] + nums[j] > target) {
-                    j--;
-                } else {
-                    i++;
+        for (int i = 0; i < res.size(); i++) {
+            for (int j = 0; j < res.get(i).size(); j++) {
+                System.out.print(res.get(i).get(j) + " ");
+            }
+            System.out.println();
+        }
+
+    }
+
+    //leetcode submit region begin(Prohibit modification and deletion)
+    class Solution {
+        //难点是去除重复解
+        public List<List<Integer>> threeSum(int[] nums) {
+            if (nums.length < 3) return new ArrayList<>();
+
+            //先排序，再双指针
+            quickSort(nums, 0, nums.length - 1);
+
+            List<List<Integer>> res = new ArrayList<>();
+            if (nums[0] > 0) return res;
+
+            for (int i = 0; i < nums.length - 2; i++) {
+                if (nums[i] > 0) return res;
+
+                if (i > 0 && nums[i] == nums[i - 1]) {
+                    continue;
+                }
+                int left = i + 1, right = nums.length - 1;
+
+                while (left < right) {
+                    int sum = nums[i] + nums[left] + nums[right];
+                    if (sum == 0) {
+                        res.add(Arrays.asList(nums[i], nums[left], nums[right]));
+                        //去重
+                        while (left < right && nums[left] == nums[left + 1]) left++;
+                        while (left < right && nums[right] == nums[right - 1]) right--;
+                        left++;
+                        right--;
+                    } else if (sum > 0) {
+                        right--;
+                    } else {
+                        left++;
+                    }
                 }
             }
+
+            return res;
         }
-        for (Map.Entry<String, String> entry : str.entrySet()) {
-            String tmp = entry.getKey();
-            Arrays.asList(tmp.split(","));
-            res.add();
+
+
+        //二分查找法
+        private boolean findInArray(int[] nums, int left, int right, int target) {
+            if (left > right || left >= nums.length || right >= nums.length) return false;
+            if (nums[left] > target) return false;
+            if (nums[right] < target) return false;
+
+            int mid = left + (right - left) / 2;
+
+            if (nums[mid] == target) return true;
+            else if (nums[mid] < target) return findInArray(nums, mid + 1, right, target);
+            else return findInArray(nums, left, mid - 1, target);
         }
-        return res;
-    }
-    private void quickSort(int[] nums, int low, int high) {
+
+        private void quickSort(int[] nums, int low, int high) {
             if (low > high) return;
 
             int i = low;
@@ -87,8 +122,7 @@ class Solution {
             nums[j] = temp;
         }
 
-}
+    }
 //leetcode submit region end(Prohibit modification and deletion)
 
 }
-*/

@@ -84,10 +84,10 @@ public class RegularExpressionMatching {
                 for (int j = 1; j <= n; j++) {
                     // *
                     if (p.charAt(j - 1) == '*') {
-                        if (matches(s, p, i, j)) {
+                        dp[i][j] = dp[i][j - 2];
+
+                        if (matches(s, p, i, j - 1)) {
                             dp[i][j] = dp[i][j] || dp[i - 1][j];
-                        } else {
-                            dp[i][j] = dp[i][j - 2];
                         }
 
                     } else {

@@ -19,6 +19,12 @@
 
 package leetcode.editor.cn;
 
+import javafx.scene.transform.Rotate;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
 public class MaximumDepthOfBinaryTree {
     public class TreeNode {
         int val;
@@ -29,31 +35,51 @@ public class MaximumDepthOfBinaryTree {
             val = x;
         }
     }
+
     public static void main(String[] args) {
         Solution solution = new MaximumDepthOfBinaryTree().new Solution();
     }
     //leetcode submit region begin(Prohibit modification and deletion)
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode(int x) { val = x; }
- * }
- */
-class Solution {
-    public int maxDepth(TreeNode root) {
-        return depth(root);
+
+    /**
+     * Definition for a binary tree node.
+     * public class TreeNode {
+     * int val;
+     * TreeNode left;
+     * TreeNode right;
+     * TreeNode(int x) { val = x; }
+     * }
+     */
+    class Solution {
+        public int maxDepth(TreeNode root) {
+            return bfs(root, 0);
+        }
+
+        private int bfs(TreeNode root) {
+            if (root == null) return 0;
+            Queue<TreeNode> queue = new LinkedList<>();
+            queue.add(root);
+            int total = 1;
+
+            while (root.left != null || root.right != null) {
+                queue.add(root.left);
+
+            }
+
+            queue.add(root);
+            depth++;
+            while (!queue.isEmpty()) {
+                root = queue.poll();
+                if (root != null) {
+                    queue.offer(root.left);
+                    queue.offer(root.right);
+                    depth += (root.left != null || root.right != null) ? 1 : 0;
+                }
+            }
+            return depth;
+        }
+
     }
-    private int depth(TreeNode root) {
-        if (root==null) return 0;
-        if (root.right==null && root.left==null) return 1;
-        if (root.left == null) return (1 + depth(root.right));
-        if (root.right == null) return (1 + depth(root.left));
-        return 1+ Math.max(depth(root.left), depth(root.right));
-    }
-}
 //leetcode submit region end(Prohibit modification and deletion)
 
 }

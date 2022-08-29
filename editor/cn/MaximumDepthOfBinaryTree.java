@@ -55,7 +55,7 @@ public class MaximumDepthOfBinaryTree {
             return bfs(root, 0);
         }
 
-        private int bfs(TreeNode root) {
+        private int bfs(TreeNode root, int depth) {
             if (root == null) return 0;
             Queue<TreeNode> queue = new LinkedList<>();
             queue.add(root);

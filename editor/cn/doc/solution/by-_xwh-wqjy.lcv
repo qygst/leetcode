@@ -1,0 +1,66 @@
+//核心：暴力法  认为循环迭代到一定次数的时候如果还不为true  大概率不是快乐数  关键是迭代次数的控制 此处最小的迭代次数可以为6
+
+* 
+
+```
+class Solution1 {
+    public boolean isHappy(int n) {
+        int len=0;
+        int temp=n;
+        int k=0;
+        while(k<6){
+            len=(temp+"").length();
+            //判断temp是不是快乐数
+            if(temp==(int)Math.pow(10,len-1)){
+                return true;
+            }
+
+            int[] res=new int[len];
+            for(int i=0;i<len;i++){
+                res[i]=temp%10;
+                temp/=10;
+            }
+            temp=0;
+            for(int i=0;i<len;i++){
+                temp+=(int)Math.pow(res[i],2);
+            }
+            k++;
+        }
+        return false;
+    }
+}
+```
+
+//核心：抓住如果结果不为1，则会陷入无限循环，说明一定存在有个数会是重复的
+
+* 
+
+```
+class Solution {
+    public boolean isHappy(int n) {
+        int len=0;
+        int temp=n;
+        HashSet<Integer> hashSet=new HashSet<>();
+        hashSet.add(temp);
+        while(temp!=1){
+            len=(temp+"").length();
+            int[] res=new int[len];
+            for(int i=0;i<len;i++){
+                res[i]=temp%10;
+                temp/=10;
+            }
+            temp=0;
+            for(int i=0;i<len;i++){
+                temp+=(int)Math.pow(res[i],2);
+            }
+            if(hashSet.contains(temp)){
+                return false;
+            }else{
+                hashSet.add(temp);
+            }
+        }
+        return true;
+    }
+}
+```
+

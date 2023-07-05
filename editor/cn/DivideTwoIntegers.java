@@ -29,22 +29,45 @@
 // 
 // Related Topics 位运算 数学 👍 897 👎 0
 
-
 package leetcode.editor.cn;
 
 //Java：两数相除
-public class DivideTwoIntegers{
+public class DivideTwoIntegers {
     public static void main(String[] args) {
         Solution solution = new DivideTwoIntegers().new Solution();
         // TO TEST
+        int dividend = 2147483647;
+        int divisor = 1;
+        System.out.println(solution.divide(dividend, divisor));
+        System.out.println(Math.pow(2, 31));
     }
-    
+
     //leetcode submit region begin(Prohibit modification and deletion)
-class Solution {
-    public int divide(int dividend, int divisor) {
-        return 0;
+    class Solution {
+        public int divide(int dividend, int divisor) {
+            if (dividend == Integer.MAX_VALUE) {
+                if (divisor == 1) return Integer.MAX_VALUE;
+                if (divisor == -1) return Integer.MIN_VALUE + 1;
+            }
+            if (dividend == Integer.MIN_VALUE) {
+                if (divisor == 1) return Integer.MIN_VALUE;
+                if (divisor == -1) return Integer.MAX_VALUE;
+            }
+            boolean negative = (dividend < 0 && divisor > 0) || (dividend > 0 && divisor < 0);
+            long dividend1 = dividend < 0 ? -1L * dividend : dividend;
+            long divisor1 = divisor < 0 ? -1L * divisor : divisor;
+
+            int res = 0;
+            while (dividend1 >= divisor1) {
+                // (2^31 / 1)溢出 or  - (2^31 / 1)
+                if (negative && -res <= 0x80000000 || !negative & res >= 0x7fffffff) return 0x7fffffff;
+                dividend1 -= divisor1;
+                res++;
+            }
+            return negative ? -1 * res : res;
+
+        }
     }
-}
 //leetcode submit region end(Prohibit modification and deletion)
 
 }

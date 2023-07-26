@@ -40,35 +40,70 @@
 
 package leetcode.editor.cn;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 //Java：两个数组的交集 II
 public class IntersectionOfTwoArraysIi {
     public static void main(String[] args) {
         Solution solution = new IntersectionOfTwoArraysIi().new Solution();
         // TO TEST
+        int[] nums1 = new int[]{4,9,5};
+        int[] nums2 = new int[]{9,4,9,8,4};
+        int[] res = solution.intersect(nums1, nums2);
+        for (int i = 0; i < res.length; i++) {
+            System.out.print(res[i] + ",");
+        }
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public int[] intersect(int[] nums1, int[] nums2) {
             HashMap<Integer, Integer> hashMap = new HashMap();
+            List<Integer> res = new ArrayList<>();
+
+            //短的数组放到hashmap中
             if (nums1.length < nums2.length) {
                 for (int i = 0; i < nums1.length; i++) {
-                    if (hashMap.get(nums1[i]) != null) {
+                    if (hashMap.containsKey(nums1[i])) {
                         hashMap.put(nums1[i], hashMap.get(nums1[i]) + 1);
+                    } else {
+                        hashMap.put(nums1[i], 1);
                     }
                 }
-                int[] res = new int[hashMap.size()];
 
                 for (int i = 0; i < nums2.length; i++) {
-                    Integer cnt = hashMap.get(nums2[i]);
-                    if (cnt != null &&　(cnt.intValue() > 0)){
-                        hashMap.put(nums1[i], hashMap.get(nums1[i]) + 1);
+                    if (hashMap.containsKey(nums2[i]) && hashMap.get(nums2[i]) > 0) {
+                        res.add(nums2[i]);
+                        hashMap.put(nums2[i], hashMap.get(nums2[i]) - 1);
                     }
                 }
 
+            } else {
+                for (int i = 0; i < nums2.length; i++) {
+                    if (hashMap.containsKey(nums2[i])) {
+                        hashMap.put(nums2[i], hashMap.get(nums2[i]) + 1);
+                    } else {
+                        hashMap.put(nums2[i], 1);
+                    }
+                }
+
+                for (int i = 0; i < nums1.length; i++) {
+                    if (hashMap.containsKey(nums1[i]) && hashMap.get(nums1[i]) > 0) {
+                        res.add(nums1[i]);
+                        hashMap.put(nums1[i], hashMap.get(nums1[i]) - 1);
+                    }
+                }
             }
+            Integer[] res1 = res.toArray(new Integer[0]);
+            int[] result = new int[res1.length];
+            for (int i = 0; i < res1.length; i++) {
+                result[i] = res1[i];
+            }
+
+            return result;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)

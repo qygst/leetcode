@@ -1,0 +1,46 @@
+### DFS 解题思路
+
+这是典型的路径问题，二叉树的经典路径是从根到叶子节点的路径，也是本题所要找的路径。
+
+DFS 深度优先搜索 是树找经典路径的最直接的方法。具体的：
+1. 路径用String表示，不断的拼接String，并在DFS过程中作为参数递归传递
+2. 从根节点开始，初始路径为空
+3. 到了叶子节点，就说明找到了一条路径，注意一定是叶子节点（即左子右子都为空），才是到了终点，把叶子的值追加到路径上去，并把路径加入结果的列表
+4. 如果不是叶子，就是中间，那就要继续向下DFS，但需要注意，**只有当子节点存在时**，才有向下的必要。路径是两个节点值中间要加标记符号，因此只有当子节点不为空时，才能凑成路径，传进来的path + 当前节点值 再加上标记符号
+5. 注意要回溯，路径只能是延着左子节点向下，或者沿着右子节点向下，不能把左边的结果带入到右边来，所以要回溯
+
+* java
+
+```java
+class Solution {
+    private List<String> result;
+
+    public List<String> binaryTreePaths(TreeNode root) {
+        result = new ArrayList<>();
+
+        helper(root, "");
+        
+        return result;
+    }
+
+    private void helper(TreeNode root, String path) {
+        // 树非空，递归时也不可能传空节点过来，所以不必对root判空
+        if (root.left == null && root.right == null) {
+            // 只有是叶子节点时，才算找到了一个路径，添加到结果列表中
+            result.add(path + root.val);
+            return;
+        }
+
+        // 只有子节点非空才有必要去递归下去
+        if (root.left != null) {
+            // 记得添加路径标记符号
+            helper(root.left, path + root.val + "->");
+        }
+        // 这里记得要回溯，不能把左子节点的路径带上
+        if (root.right != null) {
+            helper(root.right, path + root.val + "->");
+        }
+    }
+}
+```
+

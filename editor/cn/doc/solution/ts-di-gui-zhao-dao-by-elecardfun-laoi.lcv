@@ -1,0 +1,53 @@
+### 代码
+
+* typescript
+
+```typescript
+function lowestCommonAncestor(root: TreeNode | null, p: TreeNode | null, q: TreeNode | null): TreeNode | null {
+    const pPath = nodePath(root,p);
+    const qPath = nodePath(root,q);
+    let ans: TreeNode | null = root;
+    //取路径长度最小的那个,不然有可能数组越界
+    const lenght = Math.min(pPath.length,qPath.length);
+    for (let i = 0; i < lenght; i++) {
+        if (pPath[i].val === qPath[i].val) {
+            //记录最近的那个公共节点
+            ans = pPath[i];
+        } else {
+            break;
+        }
+    }
+    return ans;
+};
+
+//求得target 在树中的路径
+function nodePath(root: TreeNode | null, target: TreeNode | null) : TreeNode[] {
+    const list = [];
+    if (root === null || target === null) {
+        return list;
+    }
+    let isFind = false;
+    const dfs = (node:TreeNode | null) => {
+        if (node === null) {
+            return;
+        }
+        if (isFind === true) {
+            return;
+        }
+        if (node.val === target.val) {
+            isFind = true;
+        }
+        //将当前节点记录到路径中
+        list.push(node);
+        //因为是二叉搜索树, 右边节点肯定大于当前节点，左边节点肯定小于当前节点
+        if (node.val > target.val) {
+            dfs(node.left);
+        } else {
+            dfs(node.right);
+        }
+    }
+    dfs(root);
+    return list;
+}
+```
+
